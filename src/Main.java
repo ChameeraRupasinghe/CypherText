@@ -11,13 +11,17 @@ import java.util.Scanner;
 public class Main {
 
 
+    private static String ecryptedRead = "";
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Encrypter encrypter = new Encrypter();
+        Decrypter decrypter = new Decrypter();
 
         String readInput = "";
 
         String encrypted;
+        String decrypted;
 
         BufferedReader bufferedReader;
         BufferedWriter bufferedWriter;
@@ -25,27 +29,14 @@ public class Main {
 
         try {
             bufferedReader = new BufferedReader(new FileReader("C:\\Users\\Chameera\\Desktop\\channel.txt"));
-            bufferedWriter = new BufferedWriter(new FileWriter("C:\\Users\\Chameera\\Desktop\\out.txt"));
 
             while (bufferedReader.ready()){
 
-                readInput = bufferedReader.readLine();
-
-                encrypted = encrypter.encrypt(readInput);
-
-
-                bufferedWriter.write(encrypted);
-                bufferedWriter.newLine();
-
-
-
-
-
-
+                readInput += bufferedReader.readLine();
             }
 
             bufferedReader.close();
-            bufferedWriter.close();
+
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -53,6 +44,21 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        encrypted = encrypter.encrypt(readInput);
+
+        try {
+            bufferedWriter = new BufferedWriter(new FileWriter("C:\\Users\\Chameera\\Desktop\\encryptout.txt"));
+
+            bufferedWriter.write(encrypted);
+
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
 
         //System.out.println(readInput);
 
@@ -76,7 +82,45 @@ public class Main {
 
         System.out.println("Decrypted Text is: "+decrpted);
 
-*/
+        */
+
+
+        System.out.println("Enter the key: ");
+        String keyString = scanner.nextLine();
+        int key = Integer.parseInt(keyString);
+
+        try {
+            bufferedReader = new BufferedReader(new FileReader("C:\\Users\\Chameera\\Desktop\\encryptout.txt"));
+
+            while (bufferedReader.ready()){
+                ecryptedRead += bufferedReader.readLine();
+            }
+
+            bufferedReader.close();
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        decrypted = decrypter.decrypt(ecryptedRead, key);
+
+
+        try {
+            bufferedWriter = new BufferedWriter(new FileWriter("C:\\Users\\Chameera\\Desktop\\out.txt"));
+            bufferedWriter.write(decrypted);
+
+
+
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
 
     }
